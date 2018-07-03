@@ -40,11 +40,11 @@ accountSchema.methods.verifyPasswordPromise = function verifyPasswordPromise(pas
   return bcrypt.compare(password, this.passwordHash)
     .then((result) => {
       // result is just a boolean letting us know if the plain text password recvd equals the hashed password
-      if (!result) {
-        // 401 is the error code for unauthorized access
-        throw new HttpErrors(401, 'ACCOUNT MODEL: incorrect data');
-      }
-      return this;
+      // if (!result) {
+      //   // 401 is the error code for unauthorized access
+      //   throw new HttpErrors(401, 'ACCOUNT MODEL: incorrect data');
+      // }
+      return result;
     })
     .catch((err) => {
       throw new HttpErrors(500, `ERROR CREATING TOKEN: ${JSON.stringify(err)}`);
@@ -59,7 +59,7 @@ accountSchema.methods.createTokenPromise = function createTokenPromise() {
       // at this point, we have a token seed generated
       // "sign" means "to encrypt"
       // this jsonWebToken.sign returns a promise that resolves with a token. When it resolves, I now have a token
-      return jsonWebToken.sign({ tokenSeed: updatedAccount.tokenSeed }, process.env.SALT);
+      return jsonWebToken.sign({ tokenSeed: updatedAccount.tokenSeed }, process.env.SECRET);
     })
     .catch((err) => {
       // you have to make a design choice how explicit you want to be with your error messages when handling errors for signup/login
