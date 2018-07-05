@@ -4,6 +4,7 @@ import faker from 'faker';
 import { startServer, stopServer } from '../lib/server';
 import { createAccountMockPromise } from './lib/account-mock';
 import { createProfileMockPromise, removeAllResources } from './lib/profile-mock';
+import logger from '../lib/logger';
 
 bearerAuth(superagent);
 
@@ -22,7 +23,7 @@ describe('TESTING ROUTER PROFILE', () => {
       account = mockData.account; /*eslint-disable-line*/
       token = mockData.token; /*eslint-disable-line*/
     } catch (err) {
-      return console.log(err);
+      return logger.log(logger.ERROR, `Unexpected error in profile-router beforeEach: ${err}`);
     }
     return undefined;
   });
