@@ -1,3 +1,5 @@
+'use strict';
+
 process.env.NODE_ENV = 'development';
 process.env.PORT = 5000;
 process.env.MONGODB_URI = 'mongodb://localhost:27017/testing';
@@ -7,7 +9,7 @@ process.env.SECRET = 'Hu;asdfiwknlasgfnwkeo002222njaksdfsdoclxo89834ht25585552';
 
 // set this to true or false depending on if you want to hit the mock AWS-SDK 
 // set to false if you want to make a real API call to your bucket
-const isAwsMock = true;
+var isAwsMock = true;
 
 if (isAwsMock) {
   process.env.AWS_BUCKET = 'fake';

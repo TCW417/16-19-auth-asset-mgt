@@ -17,3 +17,9 @@ if (process.env.NODE_ENV !== 'production') {
   require('./build/main'); /*eslint-disable-line*/
 }
 
+if (process.argv.includes('-verbose')) {
+  logger.log(logger.INFO, 'VERBOSE logger output');
+} else {
+  console.log('Silent mode');
+}
+

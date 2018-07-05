@@ -9,9 +9,7 @@ const profileRouter = new Router();
 // the whole point of passing in bearerAuthMiddleware is to attach a user's account to the request object. If we get that far, we know this user is authorized to do CRUD operations on a profile that maps back to their account, therefore we can attach a required accountId onto the Profile instance because the bearerAuthMiddleware process gave us an account to access 
 
 profileRouter.post('/api/profiles', bearerAuthMiddleware, (request, response, next) => {
-  logger.log(logger.INFO, `.post /api/profiles req.body: ${request.body}`);
   if (!request.account) return next(new HttpErrors(400, 'POST PROFILE_ROUTER: invalid request'));
-
   Profile.init()
     .then(() => {
       return new Profile({
@@ -20,7 +18,7 @@ profileRouter.post('/api/profiles', bearerAuthMiddleware, (request, response, ne
       }).save();
     })
     .then((profile) => {
-      logger.log(logger.INFO, `POST PROFILE ROUTER: new profile created with 200 code, ${JSON.stringify(profile)}`);
+      logger.log(logger.INFO, `POST PROFILE ROUTER: new profile created with 200 code, ${JSON.stringify(profile._id)}`);
       return response.json(profile);
     })
     .catch(next);
