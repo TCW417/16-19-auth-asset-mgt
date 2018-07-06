@@ -6,8 +6,8 @@ import cors from 'cors';
 import logger from './logger';
 
 // middleware
-import errorMiddleWare from '../lib/middleware/error-middleware';
-import loggerMiddleware from '../lib/middleware/logger-middleware';
+import errorMiddleware from './middleware/error-middleware';
+import loggerMiddleware from './middleware/logger-middleware';
 
 // our routes
 import authRouter from '../router/auth-router';
@@ -35,7 +35,7 @@ app.all('*', (request, response) => {
   return response.sendStatus(404).send('Route Not Registered');
 });
 
-app.use(errorMiddleWare);
+app.use(errorMiddleware);
 
 
 const startServer = () => {
