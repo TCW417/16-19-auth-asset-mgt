@@ -18,4 +18,4 @@ const productionLogger = {
   log: () => ({}),
 };
 
-module.exports = process.env.NODE_ENV !== 'production' && process.argv.includes('-verbose') ? devLogger : productionLogger;
+module.exports = process.env.NODE_ENV === 'production' || process.argv.includes('-silent') ? productionLogger : devLogger;
