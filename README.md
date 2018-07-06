@@ -140,6 +140,48 @@ This route response with status 404 if bookCoverId isn't found, 401 if authoriza
 
 This route deletes the book cover with id bookCoverId. It returns an empty object on success and status 200. If bookCoverId is not found status 404 is returned, status 401 is returned if token is invalid.
 
+### Load Testing Analysis
+
+The API was tested on the production environment hosted by Heroku with MongoDB provisioned by mLab. Note that both of these resources are of the "sandbox" or free variety so these results must be understood with that in mind. Provisioning the API with "paid" resources providing parallel execution of multiple server instances would significantly improve results.
+
+#### Test Approach
+
+Two test flows were utilized:
+- Creating a new account and profile and
+- Retrieving an existing profile
+
+These tests where run in a 75% POST (create) and 25% GET (retrieve) mix.  This was done to try and simulate a typical mix of requests and defeat caching of server code that would result from only exercising a single server route.  With additional server resources, more complex test scenarios could be evaluated.
+
+#### Results Summary
+
+| Summary | |
+|---------|-|
+| Test duration | 200 seconds |
+| Scenarios created | 45,564 |
+| Scenarios completed | 45,084 |
+
+| Scenario Counts | |
+|-----------------|-|
+| Create Users/Profiles | 34,122 (74.9%) |
+| Get Users | 11,442 (25.1%) |
+
+| HTML Code | Meaning | Count |
+|------|---------|-------|
+| 200 | Success | 67,278 |
+| 400 | Bad Request | 11,140 |
+| 401 | Invalid token | 280 |
+| 409 | Conflict | 332 |
+| 503 | Server error | 114 |
+
+| Errors | |
+|-------|-|
+| ETIMEDOUT | 80 |
+
+The 503 HTML codes and ETIMEDOUT errors are a result of the Heroku dyno (server instance) becoming overtaxed by the test.  Code 400, Bad Request, was caused by the mock data generator producing invalid values. This is a good simulation of users entering invalid values and is not considered an error. Likewise, codes 401 and 409 are not errors. 401 is caused by the queue of valid request tokens emptying (and a blank, invalid token being used instead), and 409 errors are caused by the mock data generator producing duplicate values. Again, simulating actual user interaction with the API.
+
+##### Detailed Results
+
+
 
 
 
