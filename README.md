@@ -193,6 +193,21 @@ This chart shows the distribution of latency measurements for five categories.  
 
 These results are not adequate for a production API. It is recommended that additional server resources be allocated for these tests to measure the effect.
 
+![](https://github.com/TCW417/16-19-auth-asset-mgt/blob/master/load-testing/assets/concurrent-users.jpg)
 
+This chart depicts the total number of virtual users hitting the API as a function of test time.  The test ramped up the number of users from 10/second to 500/second over the course of 60 seconds. This chart demostrate is another indication of the latency increase caused by increased number of users hitting our limited server resources.
+
+![](https://github.com/TCW417/16-19-auth-asset-mgt/blob/master/load-testing/assets/mean-rps.jpg)
+![](https://github.com/TCW417/16-19-auth-asset-mgt/blob/master/load-testing/assets/rps-count.jpg)
+
+These charts represent measurement of Responses Per Second (RPS) as seen by the load test suite.   You'll notice that the RPS rate was fairly flat (consistent) over most of the test run, holding at around 500. The number of responses per second is directly related to the number of cores (Heroku dynos) allocated to the server, so one can expect this figure to improve directly with increased investment in server resources.
+
+![](https://github.com/TCW417/16-19-auth-asset-mgt/blob/master/load-testing/assets/http-codes.jpg)
+
+Finally, the HTTP Codes chart shows the distribution of codes returned by the server as a function of test run time. Given the conditions of the test and the resources provided for it, these results are not unexpected or unreasonable.  200 (Success) is by far the dominant result with 400 (Bad request) coming in second consistently over the test run. The 400 errors, as mentioned above, are directly attributable to the test harness but, nevertheless, reflect the likely result of real users submitting mal-formed API requests.
+
+##### Conclusion
+
+While these tests are exercising a limited portion of the capabilitie of our API, the are representative of the responsiveness actual users are likely to see with the application deployed using free Infrastructure As A Service (IAAS) facilities.  Improvement in performance (if desired) can easily be achieved by increasing investment in IAAS resources.
 
 
