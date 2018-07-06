@@ -181,6 +181,17 @@ The 503 HTML codes and ETIMEDOUT errors are a result of the Heroku dyno (server 
 
 ##### Detailed Results
 
+![](https://github.com/TCW417/16-19-auth-asset-mgt/blob/master/load-testing/assets/latency-distro.jpg)
+
+This chart shows the distribution of latency measurements for five categories.  Latency is a measure of the delay in processing server requests resulting from network delays. As such it is largely out of our control, beyond the possible upgrading of on-site networking equipment.  This should not be confused with response time, which is a measure of the end-to-end time from submission of a request to return of a result.  
+
+- MIN (too small to show up on the scale of this graph), 75.4ms
+- MAX 41.665 seconds
+- MEDIAN 4.294 seconds
+- P95 15.296 seconds (95% of users experienced this latence or better)
+- P99 21.782 seconds (99% of users experienced this latence or better)
+
+These results are not adequate for a production API. It is recommended that additional server resources be allocated for these tests to measure the effect.
 
 
 
