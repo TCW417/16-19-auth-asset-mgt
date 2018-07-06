@@ -42,7 +42,7 @@ const startServer = () => {
   return mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
       server = app.listen(PORT, () => {
-        logger.log(logger.INFO, `Server up on por ${PORT}`);
+        console.log(`info: Server up on port ${PORT}`);
       });
     })
     .catch((err) => {

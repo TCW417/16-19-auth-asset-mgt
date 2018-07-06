@@ -1,0 +1,88 @@
+{
+  "config": {
+    "environments": {
+      "production": {
+        "target": "https://lab16-19authentication.herokuapp.com"
+      },
+      "development": {
+        "target": "http://localhost:3000"
+      }
+    },
+    "http": {
+      "tls": {
+        "rejectUnauthorized": false
+      }
+    },
+    "phases": [
+      {
+       "duration": 2,
+       "arrivalRate": 10,
+       "name": "Warming up..."
+      },
+      {
+        "duration": 2,
+        "arrivalRate": 10,
+        "rampTo": 1000,
+        "name": "Ramping up to max load"
+      },
+      {
+        "duration": 2,
+        "arrivalRate": 1000,
+        "name": "Sustained max rate"
+      }
+    ],
+    "processor" : "./load-test-create-user.js"
+  },
+  "scenarios": [
+    {
+      "name": "Create Users",
+      "weight": 6,
+      "flow": [
+        {
+          "post": {
+            "url": "/api/signup",
+            "beforeRequest": "create",
+            "afterResponse": "saveToken",
+            "json": {
+              "username": "{{ username }}",
+              "email": "{{ email }}",
+              "password": "{{ password }}"
+            },
+            "capture": {
+              "json": "$.token",
+              "as": "token"
+            }
+          }
+        }
+        ,{
+          "post": {
+            "url": "/api/profiles",
+            "headers": {
+              "Authorization": "Bearer {{ token }}"
+            },
+            "json": {
+              "bio": "{{ bio }}",
+              "firstName": "{{ firstName }}",
+              "lastName": "{{ lastName }}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get Users",
+      "weight": 2,
+      "flow": [
+        {
+          "get": {
+            "url": "/api/profiles",
+            "beforeRequest": "retrieveToken",
+            "headers": {
+              "Authorization": "Bearer {{ token }}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
